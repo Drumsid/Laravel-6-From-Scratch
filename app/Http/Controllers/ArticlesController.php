@@ -10,17 +10,12 @@ class ArticlesController extends Controller
     public function index()
     {
         $articles = Article::latest()->get();
-        return view('articles.index', [
-            'articles' => $articles
-        ]);
+        return view('articles.index', compact('articles'));
     }
 
-    public function show($id)
+    public function show(Article $article)
     {
-        $article = Article::find($id);
-        return view('articles.show', [
-            'article' => $article
-        ]);
+        return view('articles.show', compact('article'));
     }
 
     public function create()
@@ -30,47 +25,30 @@ class ArticlesController extends Controller
 
     public function store()
     {
-        request()->validate([
-            'title' => ['required', 'min:3', 'max:255'],
-            'img' => 'required',
-            'excerpt' => ['required', 'min:10', 'max:255'],
-            'body' => ['required', 'min:10'],
-        ]);
-
-        $article = new Article();
-
-        $article->title = request('title');
-        $article->img = request('img');
-        $article->excerpt = request('excerpt');
-        $article->body = request('body');
-        $article->save();
+        Article::create($this->validateArticle());
 
         return redirect()->route('articles.index');
     }
-    public function edit($id)
-    {
-        $article = Article::find($id);
 
+    public function edit(Article $article)
+    {
         return view('articles.edit', compact('article'));
     }
 
-    public function update($article)
+    public function update(Article $article)
     {
-        request()->validate([
+        $article->update($this->validateArticle());
+
+        return redirect(route('article.show', $article));
+    }
+
+    protected function validateArticle()
+    {
+        return request()->validate([
             'title' => ['required', 'min:3', 'max:255'],
             'img' => 'required',
             'excerpt' => ['required', 'min:10', 'max:255'],
             'body' => ['required', 'min:10'],
         ]);
-
-        $article = Article::find($article);
-
-        $article->title = request('title');
-        $article->img = request('img');
-        $article->excerpt = request('excerpt');
-        $article->body = request('body');
-        $article->save();
-
-        return redirect(route('article.show', $article));
     }
 }
