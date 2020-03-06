@@ -12,6 +12,7 @@
 			</p>
 
 			<p>{!!$article->body!!}</p>
+		<a href="{{ route('article.edit', $article) }}">edit</a>
 		</div>
 	</div>
 </div>
