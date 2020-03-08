@@ -60,6 +60,21 @@
                     @endif
                 </div>
 
+                <div class="form-group">
+                    <label for="bodyInput">tags</label>
+
+                    <select name="tags[]" multiple>
+                        @foreach ($tags as $tag)
+                            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                            
+                        @endforeach
+                    </select>
+
+                    @if ($errors->has('tags'))
+                        <p class="text-danger">{{ $message }}</p>
+                    @endif
+                </div>
+
                 <button type="submit" class="btn btn-primary">Создать</button>
             </form>
     </div>

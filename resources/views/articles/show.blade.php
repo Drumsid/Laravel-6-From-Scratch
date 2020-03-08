@@ -12,7 +12,16 @@
 			</p>
 
 			<p>{!!$article->body!!}</p>
-		<a href="{{ route('article.edit', $article) }}">edit</a>
+
+			<h4>tags</h4>
+			@forelse ($article->tags as $tag)
+		<a class="bg-primary text-white" href="/articles?tag={{ $tag->name }}">{{ $tag->name }}</a>
+			@empty
+				<p>No tags for this</p>
+			@endforelse
+			<br><br><br>
+
+		<a class = "bg-success text-white" href="{{ route('article.edit', $article) }}">edit</a>
 		</div>
 	</div>
 </div>
